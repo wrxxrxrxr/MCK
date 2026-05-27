@@ -1,0 +1,21 @@
+{
+    "name": "Мой Личный Кабинет MCK",
+    "short_name": "MCK Кабинет",
+    "description": "Личный кабинет клиента MCK-Reliable",
+    "start_url": "/client",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#e31e24",
+    "icons": [
+      {
+        "src": "/images/icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/images/icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }

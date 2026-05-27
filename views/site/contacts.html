@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты — MCK-Reliable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/main.css">
+    
+</head>
+<body>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="main-nav" id="mainNav">
+    <div class="container nav-container">
+        <a href="/" class="logo">
+            <div class="logo-circle"></div>
+            MCK<span>-Релайбл</span>
+        </a>
+
+        <div class="mobile-toggle" id="mobileToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="/" class="nav-link">Главная</a></li>
+            <li><a href="/gallery" class="nav-link active">Проекты</a></li>
+            <li><a href="/contacts" class="nav-link">Контакты</a></li>
+            <li><a href="/#contact" class="nav-contact">Обсудить проект</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-section" style="min-height: 60vh;">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-subtitle">Контакты</div>
+            <div class="hero-title-wrapper">
+                <h1 class="hero-title">СВЯЖИТЕСЬ С НАМИ</h1>
+                <div class="scroll-indicator" onclick="scrollToContacts()">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>            
+            
+            <p class="hero-description">
+                Мы всегда открыты для новых проектов, консультаций и партнёрства.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- КОНТАКТЫ + ФОРМА -->
+<section class="contact-section" id="contacts">
+    <div class="container">
+        <div class="contact-container">
+
+            <!-- ЛЕВАЯ ЧАСТЬ -->
+            <div class="contact-info">
+                <h2 class="contact-title">Наши <span>контакты</span></h2>
+
+                <div class="contact-details">
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Адрес</strong><br>
+                            Минск, ул. Брестская, 87
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Телефон</strong><br>
+                            +375(29)-663-82-02
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <strong>Email</strong><br>
+                            mck-reliable@yandex.ru
+                        </div>
+                    </div>
+                </div>
+
+                <!-- СОЦСЕТИ -->
+                <div class="social-links">
+                    <a href="https://www.instagram.com/mck_reliable?igsh=MW5sbnhsNTU1YzRtcA==" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- ФОРМА С ВЫБОРОМ КОДА СТРАНЫ -->
+            <div class="contact-form">
+                <h3 class="form-title">Оставить заявку</h3>
+                <p class="form-subtitle">Мы свяжемся с вами в ближайшее время</p>
+
+                <form id="leadForm">
+                    <div class="form-group">
+                        <input type="text" 
+                               class="form-input" 
+                               id="leadName" 
+                               name="name" 
+                               placeholder="Ваше имя *" 
+                               required
+                               minlength="2">
+                        <div class="form-error" id="nameError"></div>
+                    </div>
+
+                    <!-- Телефон с выбором кода страны -->
+                    <div class="form-group">
+                        <div class="phone-input-group">
+                            <div class="country-code-selector">
+                                <div class="country-code-current" id="countryCodeCurrent">
+                                    <span class="country-flag">🇧🇾</span>
+                                    <span class="country-code">+375</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="country-code-dropdown" id="countryCodeDropdown">
+                                    <!-- Поле поиска -->
+                                    <div class="country-code-search">
+                                        <input type="text" id="countrySearch" placeholder="Поиск страны или кода...">
+                                    </div>
+                                    
+                                    <!-- Список стран -->
+                                    <div class="country-list-container">
+                                        <!-- Страны будут добавлены через JS -->
+                                    </div>
+                                    
+                                    <!-- Сообщение при отсутствии результатов -->
+                                    <div class="no-results" id="noResults">
+                                        <i class="fas fa-search"></i>
+                                        <p>Страна не найдена</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="tel" 
+                            class="form-input phone-number-input" 
+                            id="leadPhone" 
+                            name="phone" 
+                            placeholder="29 123-45-67" 
+                            required>
+                        </div>
+                        <div class="form-error" id="phoneError"></div>
+                        <input type="hidden" name="country_code" id="countryCodeInput" value="+375">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" 
+                               class="form-input" 
+                               id="leadEmail" 
+                               name="email" 
+                               placeholder="Email (необязательно)">
+                        <div class="form-error" id="emailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-select" id="objectTypeSelect">
+                            <div class="custom-select-trigger">
+                                <span class="selected-option-text">Выберите тип объекта</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="custom-select-dropdown">
+                                <div class="dropdown-header">
+                                    <input type="text" id="objectTypeSearch" placeholder="Поиск типа объекта...">
+                                </div>
+                                <div class="dropdown-options" id="objectTypeOptions">
+                                    <div class="no-options">Загрузка...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-error" id="objectTypeError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-input" 
+                                  id="leadMessage" 
+                                  name="message" 
+                                  rows="4" 
+                                  placeholder="Сообщение (необязательно)"></textarea>
+                    </div>
+
+                    <input type="hidden" name="source" value="contacts_page">
+
+                    <button type="submit" class="btn-primary" id="submitBtn" style="width:100%;">
+                        <span>Отправить заявку</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    
+                    <div id="formMessage" class="form-message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- КАРТА -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Мы <span>на карте</span></h2>
+            <p class="section-subtitle">Наш офис удобно расположен в центре города</p>
+        </div>
+
+        <div style="border-radius: 12px; overflow: hidden; height: 450px;">
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Af140bf992b7d2c2e8a6f051a0d38f83e8a0676b825c72c74dc19e676a6e35945&amp;source=constructor" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+</section>
+
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="#" class="footer-logo">
+                    МСК<span>-Релайбл</span>
+                </a>
+                <p class="footer-description">Современная строительная компания, специализирующаяся на архитектурном проектировании и строительстве объектов.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Ресурсы</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Документация</a></li>
+                    <li><a href="/contacts">Контакты</a></li>
+                    <li><a href="/admin/login" class="admin-link">Сотрудникам</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; 2026 МСК-Релайбл. Все права защищены.
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Модальное окно документации -->
+<div class="documentation-modal" id="documentationModal">
+    <div class="documentation-content">
+        <div class="documentation-header">
+            <h2>Документация и <span>инструкция</span></h2>
+            <p>Полное руководство по использованию сайта и оформлению заявок</p>
+            <button class="documentation-close" id="closeDocumentation">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="documentation-body">
+            <!-- Раздел 1: Общая информация -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    Общая информация
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        О компании
+                    </div>
+                    <div class="doc-step-desc">
+                        МСК-Релайбл — строительная организация, специализирующаяся на архитектурном проектировании 
+                        и строительстве объектов премиум-класса. На сайте представлены наши проекты, услуги и 
+                        возможность оставить заявку на консультацию.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Навигация по сайту
+                    </div>
+                    <div class="doc-step-desc">
+                        <strong>Главная</strong> — основная страница с проектами и формой заявки<br>
+                        <strong>Проекты</strong> — галерея всех выполненных работ<br>
+                        <strong>Контакты</strong> — контактная информация и карта<br>
+                        <strong>Обсудить проект</strong> — быстрый переход к форме заявки
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 2: Оформление заявки -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-file-signature"></i>
+                    Как оставить заявку
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Поле "Ваше имя"
+                    </div>
+                    <div class="doc-step-desc">
+                        Введите ваше полное имя или фамилию с именем. Поле обязательно для заполнения.
+                        <div class="doc-example">
+                            ✓ Правильно: Иванов Иван<br>
+                            ✓ Правильно: Анна Петрова<br>
+                            ✗ Неправильно: Ivan123 (цифры не допускаются)<br>
+                            ✗ Неправильно: А (минимум 2 символа)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Выбор кода страны и номера телефона
+                    </div>
+                    <div class="doc-step-desc">
+                        Нажмите на флаг страны, чтобы открыть выпадающий список и выбрать нужную страну. 
+                        Затем введите номер телефона без кода страны.
+                        <div class="doc-example">
+                            Россия (+7): 999 123-45-67<br>
+                            Беларусь (+375): 29 123-45-67<br>
+                            Украина (+380): 99 123-45-67<br>
+                            Казахстан (+7): 777 123-45-67
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">3</span>
+                        Поле "Email" (необязательное)
+                    </div>
+                    <div class="doc-step-desc">
+                        Укажите ваш email для получения письменного подтверждения заявки.
+                        <div class="doc-example">
+                            ✓ Правильно: user@mail.ru<br>
+                            ✓ Правильно: name@company.com<br>
+                            ✗ Неправильно: user@mail (нет домена)<br>
+                            ✗ Неправильно: user mail.ru (нет символа @)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">4</span>
+                        Выбор типа объекта
+                    </div>
+                    <div class="doc-step-desc">
+                        Нажмите на поле "Выберите тип объекта", чтобы открыть выпадающий список. 
+                        Вы можете воспользоваться поиском для быстрого нахождения нужного типа.
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">5</span>
+                        Описание проекта
+                    </div>
+                    <div class="doc-step-desc">
+                        Кратко опишите ваш проект: тип объекта, площадь, пожелания и особые требования.
+                        Это поможет нам лучше подготовиться к консультации.
+                    </div>
+                </div>
+                
+                <div class="doc-note">
+                    <i class="fas fa-lightbulb"></i>
+                    <span class="doc-note-text">
+                        <strong>Важно:</strong> Все обязательные поля отмечены звездочкой (*). 
+                        После успешной отправки вы получите номер заявки, а наш менеджер свяжется с вами в течение часа.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Раздел 3: Просмотр проектов -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-images"></i>
+                    Просмотр проектов
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Галерея на главной
+                    </div>
+                    <div class="doc-step-desc">
+                        На главной странице представлены избранные проекты. Наведите курсор на карточку проекта, 
+                        чтобы увидеть подробную информацию: категорию, название и местоположение.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Страница "Проекты"
+                    </div>
+                    <div class="doc-step-desc">
+                        В разделе "Проекты" доступна полная галерея всех выполненных работ с возможностью 
+                        фильтрации по категориям и поиска.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 4: Контакты -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-address-card"></i>
+                    Контакты и связь
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Способы связи
+                    </div>
+                    <div class="doc-step-desc">
+                        <strong>Телефон:</strong> +375(29)-663-82-02<br>
+                        <strong>Email:</strong> mck-reliable@yandex.ru<br>
+                        <strong>Адрес:</strong> Минск, ул. Брестская, 87<br>
+                        <strong>Соцсети:</strong> Instagram
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Время работы
+                    </div>
+                    <div class="doc-step-desc">
+                        Пн-Пт: 9:00 - 18:00<br>
+                        Сб-Вс: выходной<br>
+                        Заявки с сайта принимаются круглосуточно.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 5: Часто задаваемые вопросы -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-question-circle"></i>
+                    Часто задаваемые вопросы
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">Как быстро обрабатывается заявка?</div>
+                    <div class="doc-step-desc">
+                        Мы обрабатываем заявки в течение 1 часа в рабочее время (Пн-Пт, 9:00-18:00).
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Можно ли загрузить файлы с проектом?</div>
+                    <div class="doc-step-desc">
+                        Да, после первичной консультации менеджер предоставит вам ссылку для загрузки файлов 
+                        или доступ к личному кабинету.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Как отменить или изменить заявку?</div>
+                    <div class="doc-step-desc">
+                        Свяжитесь с нами по телефону +375(29)-663-82-02 или напишите на mck-reliable@yandex.ru, 
+                        указав номер заявки.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Работаете ли вы в других городах?</div>
+                    <div class="doc-step-desc">
+                        Да, мы работаем по всей Беларуси и странам СНГ. Условия обсуждаются индивидуально.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Инициализация модального окна документации
+function initDocumentationModal() {
+    const modal = document.getElementById('documentationModal');
+    const closeBtn = document.getElementById('closeDocumentation');
+    
+    if (!modal) return;
+    
+    // Находим ссылку "Документация" в футере
+    const docLink = Array.from(document.querySelectorAll('.footer-links a')).find(a => 
+        a.textContent.trim() === 'Документация'
+    );
+    
+    // Открытие модального окна
+    if (docLink) {
+        docLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Закрытие по кнопке
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+    }
+    
+    // Закрытие по клику вне контента
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// Вызвать функцию после загрузки DOM
+document.addEventListener('DOMContentLoaded', function() {
+    initDocumentationModal();
+});
+
+class CustomSelect {
+    constructor(containerId) {
+        this.container = document.getElementById(containerId);
+        if (!this.container) return;
+        
+        this.trigger = this.container.querySelector('.custom-select-trigger');
+        this.dropdown = this.container.querySelector('.custom-select-dropdown');
+        this.searchInput = this.container.querySelector('#objectTypeSearch');
+        this.optionsContainer = this.container.querySelector('#objectTypeOptions');
+        this.selectedDisplay = this.trigger.querySelector('.selected-option-text');
+        
+        this.selectedValue = null;
+        this.selectedText = null;
+        
+        this.init();
+    }
+    
+    async init() {
+        await this.loadObjectTypes();
+        this.bindEvents();
+    }
+    
+    async loadObjectTypes() {
+        try {
+            const response = await fetch('/api/object-types/public');
+            const types = await response.json();
+            
+            if (types && types.length > 0) {
+                this.renderOptions(types);
+            } else {
+                this.optionsContainer.innerHTML = '<div class="no-options">Нет доступных типов объектов</div>';
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки:', error);
+            this.optionsContainer.innerHTML = '<div class="no-options">Ошибка загрузки данных</div>';
+        }
+    }
+    
+    renderOptions(types) {
+        let html = '';
+        types.forEach(type => {
+            html += `
+                <div class="option-item" data-value="${type.ObjectTypeID}">
+                    <div class="option-text">${this.escapeHtml(type.TypeName)}</div>
+                </div>
+            `;
+        });
+        this.optionsContainer.innerHTML = html;
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    bindEvents() {
+        this.trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleDropdown();
+        });
+        
+        if (this.searchInput) {
+            this.searchInput.addEventListener('input', (e) => {
+                this.filterOptions(e.target.value);
+            });
+        }
+        
+        this.optionsContainer.addEventListener('click', (e) => {
+            const option = e.target.closest('.option-item');
+            if (option) {
+                const value = option.dataset.value;
+                const text = option.querySelector('.option-text').textContent;
+                this.selectOption(value, text, option);
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!this.container.contains(e.target)) {
+                this.closeDropdown();
+            }
+        });
+    }
+    
+    toggleDropdown() {
+        if (this.dropdown.classList.contains('show')) {
+            this.closeDropdown();
+        } else {
+            this.openDropdown();
+        }
+    }
+    
+    openDropdown() {
+        this.dropdown.classList.add('show');
+        this.trigger.classList.add('open');
+        setTimeout(() => {
+            if (this.searchInput) this.searchInput.focus();
+        }, 100);
+    }
+    
+    closeDropdown() {
+        this.dropdown.classList.remove('show');
+        this.trigger.classList.remove('open');
+        if (this.searchInput) {
+            this.searchInput.value = '';
+            this.filterOptions('');
+        }
+    }
+    
+    selectOption(value, text, optionElement) {
+        const prevSelected = this.optionsContainer.querySelector('.option-item.selected');
+        if (prevSelected) prevSelected.classList.remove('selected');
+        
+        optionElement.classList.add('selected');
+        this.selectedDisplay.textContent = text;
+        this.selectedDisplay.classList.remove('placeholder');
+        
+        this.selectedValue = value;
+        this.selectedText = text;
+        
+        this.container.dispatchEvent(new CustomEvent('change', {
+            detail: { value, text }
+        }));
+        
+        this.closeDropdown();
+    }
+    
+    filterOptions(searchTerm) {
+        const options = this.optionsContainer.querySelectorAll('.option-item');
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        let hasVisible = false;
+        
+        options.forEach(option => {
+            const text = option.querySelector('.option-text').textContent.toLowerCase();
+            if (text.includes(lowerSearchTerm)) {
+                option.style.display = 'flex';
+                hasVisible = true;
+            } else {
+                option.style.display = 'none';
+            }
+        });
+        
+        const noResults = this.optionsContainer.querySelector('.no-results-custom');
+        if (!hasVisible && options.length > 0) {
+            if (!noResults) {
+                const msg = document.createElement('div');
+                msg.className = 'no-options no-results-custom';
+                msg.innerHTML = '<i class="fas fa-search"></i><p>Тип объекта не найден</p>';
+                this.optionsContainer.appendChild(msg);
+            }
+        } else if (noResults) {
+            noResults.remove();
+        }
+    }
+    
+    getValue() {
+        return this.selectedValue;
+    }
+    
+    getText() {
+        return this.selectedText;
+    }
+}
+
+// Инициализация кастомного селектора
+const objectTypeSelect = new CustomSelect('objectTypeSelect');
+objectTypeSelect.container._customSelect = objectTypeSelect;
+    function scrollToContacts() {
+        document.getElementById('contacts').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('leadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formMessage = document.getElementById('formMessage');
+        
+        // Список стран
+        const countries = [
+        { code: "+375", name: "Беларусь", flag: "🇧🇾", flagClass: "by" },
+        { code: "+7", name: "Россия", flag: "🇷🇺", flagClass: "ru" },
+            { code: "+380", name: "Украина", flag: "🇺🇦", flagClass: "ua" },
+            { code: "+7", name: "Казахстан", flag: "🇰🇿", flagClass: "kz" },
+            { code: "+374", name: "Армения", flag: "🇦🇲", flagClass: "am" },
+            { code: "+995", name: "Грузия", flag: "🇬🇪", flagClass: "ge" },
+            { code: "+994", name: "Азербайджан", flag: "🇦🇿", flagClass: "az" },
+            { code: "+996", name: "Кыргызстан", flag: "🇰🇬", flagClass: "kg" },
+            { code: "+998", name: "Узбекистан", flag: "🇺🇿", flagClass: "uz" },
+            { code: "+992", name: "Таджикистан", flag: "🇹🇯", flagClass: "tj" },
+            { code: "+993", name: "Туркменистан", flag: "🇹🇲", flagClass: "tm" },
+            { code: "+90", name: "Турция", flag: "🇹🇷", flagClass: "tr" },
+            { code: "+49", name: "Германия", flag: "🇩🇪", flagClass: "de" },
+            { code: "+33", name: "Франция", flag: "🇫🇷", flagClass: "fr" },
+            { code: "+44", name: "Великобритания", flag: "🇬🇧", flagClass: "gb" },
+            { code: "+1", name: "США", flag: "🇺🇸", flagClass: "us" },
+            { code: "+86", name: "Китай", flag: "🇨🇳", flagClass: "cn" }
+        ];
+
+        
+        const validators = {
+            name(value) {
+                const v = value.trim();
+                if (!v) return 'Пожалуйста, введите имя';
+                if (v.length < 2) return 'Имя слишком короткое (минимум 2 символа)';
+                if (!/^[А-ЯЁа-яёA-Za-z\s\-]+$/.test(v)) return 'Имя может содержать только буквы, пробелы и дефис';
+                return null;
+            },
+            phone(value, countryCode) {
+                const digits = value.replace(/\D/g, '');
+                if (!digits) return 'Пожалуйста, введите номер телефона';
+                const lengths = { '+7': 10, '+375': 9, '+380': 9 };
+                const required = lengths[countryCode] || 10;
+                if (digits.length < required) return `Введите ${required} цифр после кода страны`;
+                return null;
+            },
+            email(value) {
+                if (!value.trim()) return null;
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()))
+                    return 'Введите корректный email (например: user@mail.ru)';
+                return null;
+            }
+        };
+
+        function setFieldState(input, error) {
+            const group = input.closest('.form-group');
+            const errorEl = group ? group.querySelector('.form-error') : null;
+
+            // Убираем все стили
+            input.style.borderColor = '';
+            input.style.paddingRight = '';
+            
+            // Показываем только текст ошибки и красную рамку при ошибке
+            if (error) {
+                input.style.borderColor = '#E24B4A';
+                if (errorEl) errorEl.textContent = error;
+            } else if (errorEl) {
+                errorEl.textContent = '';
+            }
+        }
+
+        function clearFieldState(input) {
+            const group = input.closest('.form-group');
+            input.style.borderColor = '';
+            input.style.paddingRight = '';
+            
+            const errorEl = group ? group.querySelector('.form-error') : null;
+            if (errorEl) errorEl.textContent = '';
+        }
+
+        // Инициализация выбора кода страны
+        function initCountryCodeSelector() {
+            const currentElement = document.getElementById('countryCodeCurrent');
+            const dropdown = document.getElementById('countryCodeDropdown');
+            const phoneInput = document.getElementById('leadPhone');
+            const hiddenInput = document.getElementById('countryCodeInput');
+            const searchInput = document.getElementById('countrySearch');
+            const noResults = document.getElementById('noResults');
+            const countryListContainer = document.querySelector('.country-list-container');
+            
+            if (!currentElement || !dropdown || !countryListContainer) return;
+            
+            // Заполняем список стран
+            countries.forEach((country, index) => {
+                const isSelected = index === 0;
+                const countryElement = document.createElement('div');
+                countryElement.className = `country-code-item ${isSelected ? 'selected' : ''}`;
+                countryElement.dataset.code = country.code;
+                countryElement.dataset.flag = country.flag;
+                countryElement.innerHTML = `
+                    <span class="country-icon">
+                        <span class="flag-icon flag-icon-${country.flagClass}"></span>
+                    </span>
+                    <span class="country-name">${country.name}</span>
+                    <span class="country-code-value">${country.code}</span>
+                `;
+                countryListContainer.appendChild(countryElement);
+            });
+            
+            // Открытие/закрытие dropdown
+            currentElement.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+                currentElement.classList.toggle('open');
+                
+                if (dropdown.classList.contains('show') && searchInput) {
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            });
+            
+            // Выбор страны
+            dropdown.addEventListener('click', function(e) {
+                const item = e.target.closest('.country-code-item');
+                if (!item) return;
+                
+                dropdown.querySelectorAll('.country-code-item').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                item.classList.add('selected');
+                
+                const code = item.dataset.code;
+                const flag = item.dataset.flag;
+                
+                currentElement.querySelector('.country-flag').textContent = flag;
+                currentElement.querySelector('.country-code').textContent = code;
+                hiddenInput.value = code;
+                
+                dropdown.classList.remove('show');
+                currentElement.classList.remove('open');
+                phoneInput.focus();
+                
+                updatePhonePlaceholder(code);
+                
+                // Перевалидируем телефон при смене кода
+                if (phoneInput.value.trim()) {
+                    setFieldState(phoneInput, validators.phone(phoneInput.value, code));
+                }
+            });
+            
+            // Поиск страны
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    let hasResults = false;
+                    
+                    dropdown.querySelectorAll('.country-code-item').forEach(item => {
+                        const countryName = item.querySelector('.country-name').textContent.toLowerCase();
+                        const countryCode = item.querySelector('.country-code-value').textContent.toLowerCase();
+                        
+                        if (countryName.includes(searchTerm) || countryCode.includes(searchTerm)) {
+                            item.style.display = 'flex';
+                            hasResults = true;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    if (noResults) {
+                        noResults.style.display = (!hasResults && searchTerm.length > 0) ? 'block' : 'none';
+                    }
+                });
+            }
+            
+            // Закрытие dropdown при клике вне его
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target) && !currentElement.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    currentElement.classList.remove('open');
+                }
+            });
+
+            // --- Поле ФИО: запрет ввода цифр и спецсимволов ---
+            const nameInput = document.getElementById('leadName');
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    const pos = this.selectionStart;
+                    const before = this.value;
+                    this.value = this.value.replace(/[^А-ЯЁа-яёA-Za-z\s\-]/g, '');
+                    const diff = before.length - this.value.length;
+                    this.setSelectionRange(pos - diff, pos - diff);
+                    clearFieldState(this);
+                });
+                nameInput.addEventListener('blur', function() {
+                    setFieldState(this, validators.name(this.value));
+                });
+            }
+
+            // --- Поле телефона: только цифры + маска ---
+            phoneInput.addEventListener('input', function(e) {
+                const code = hiddenInput.value;
+                formatPhoneNumber(e.target, code);
+                clearFieldState(this);
+            });
+            phoneInput.addEventListener('blur', function() {
+                setFieldState(this, validators.phone(this.value, hiddenInput.value));
+            });
+
+            // --- Поле email ---
+            const emailInput = document.getElementById('leadEmail');
+            if (emailInput) {
+                emailInput.addEventListener('input', function() {
+                    clearFieldState(this);
+                });
+                emailInput.addEventListener('blur', function() {
+                    if (this.value.trim()) {
+                        setFieldState(this, validators.email(this.value));
+                    }
+                });
+            }
+            
+            updatePhonePlaceholder('+7');
+        }
+        
+        // Функция форматирования номера телефона
+        function formatPhoneNumber(input, countryCode) {
+            let value = input.value.replace(/\D/g, '');
+            const cursorPosition = input.selectionStart;
+            let formattedValue = value;
+            
+            switch(countryCode) {
+                case '+7':
+                    if (value.length > 0) {
+                        if (value.length <= 3) formattedValue = value;
+                        else if (value.length <= 6) formattedValue = value.substring(0,3) + ' ' + value.substring(3,6);
+                        else if (value.length <= 8) formattedValue = value.substring(0,3) + ' ' + value.substring(3,6) + '-' + value.substring(6,8);
+                        else formattedValue = value.substring(0,3) + ' ' + value.substring(3,6) + '-' + value.substring(6,8) + '-' + value.substring(8,10);
+                    }
+                    break;
+                    
+                case '+375':
+                case '+380':
+                    if (value.length > 0) {
+                        if (value.length <= 2) formattedValue = value;
+                        else if (value.length <= 5) formattedValue = value.substring(0,2) + ' ' + value.substring(2,5);
+                        else if (value.length <= 7) formattedValue = value.substring(0,2) + ' ' + value.substring(2,5) + '-' + value.substring(5,7);
+                        else formattedValue = value.substring(0,2) + ' ' + value.substring(2,5) + '-' + value.substring(5,7) + '-' + value.substring(7,9);
+                    }
+                    break;
+                    
+                default:
+                    if (value.length > 0) {
+                        if (value.length <= 4) formattedValue = value;
+                        else if (value.length <= 8) formattedValue = value.substring(0,4) + ' ' + value.substring(4,8);
+                        else formattedValue = value.substring(0,4) + ' ' + value.substring(4,8) + ' ' + value.substring(8,12);
+                    }
+            }
+            
+            input.value = formattedValue;
+            const addedChars = formattedValue.length - value.length;
+            input.setSelectionRange(cursorPosition + addedChars, cursorPosition + addedChars);
+        }
+        
+        // Обновление плейсхолдера
+        function updatePhonePlaceholder(countryCode) {
+            const phoneInput = document.getElementById('leadPhone');
+            if (!phoneInput) return;
+            
+            const placeholders = {
+                '+7':   '999 123-45-67',
+                '+375': '29 123-45-67',
+                '+380': '99 123-45-67',
+                '+374': '99 12-34-56',
+                '+1':   '(555) 123-4567',
+                '+44':  '20 1234 5678'
+            };
+            phoneInput.placeholder = placeholders[countryCode] || 'Номер телефона';
+        }
+        
+        // Функции для очистки старых ошибок (для обратной совместимости)
+        function clearErrors() {
+            document.querySelectorAll('.form-error').forEach(error => {
+                error.textContent = '';
+            });
+        }
+        
+        // Инициализация
+        initCountryCodeSelector();
+        
+        // Обработка отправки формы
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    clearErrors();
+    formMessage.textContent = '';
+    formMessage.className = 'form-message';
+    
+    const nameInput = document.getElementById('leadName');
+    const phoneInput = document.getElementById('leadPhone');
+    const emailInput = document.getElementById('leadEmail');
+    const countryCodeInput = document.getElementById('countryCodeInput');
+    
+    // Получаем выбранный тип объекта
+    const objectTypeId = objectTypeSelect.getValue();
+    const objectTypeText = objectTypeSelect.getText();
+    
+    // Валидация типа объекта
+    let objectTypeError = null;
+    if (!objectTypeId) {
+        objectTypeError = 'Пожалуйста, выберите тип объекта';
+        const errorDiv = document.getElementById('objectTypeError');
+        if (errorDiv) errorDiv.textContent = objectTypeError;
+    } else {
+        const errorDiv = document.getElementById('objectTypeError');
+        if (errorDiv) errorDiv.textContent = '';
+    }
+    
+    // Валидация полей
+    const nameErr = validators.name(nameInput.value);
+    const phoneErr = validators.phone(phoneInput.value, countryCodeInput.value);
+    const emailErr = validators.email(emailInput.value);
+    
+    setFieldState(nameInput, nameErr);
+    setFieldState(phoneInput, phoneErr);
+    setFieldState(emailInput, emailErr);
+    
+    if (nameErr || phoneErr || emailErr || objectTypeError) {
+        const firstInvalid = [nameInput, phoneInput, emailInput].find((el, i) => 
+            el && [nameErr, phoneErr, emailErr][i]
+        );
+        if (firstInvalid) firstInvalid.focus();
+        return;
+    }
+    
+    const phoneDigits = phoneInput.value.replace(/\D/g, '');
+    const fullPhone = countryCodeInput.value + ' ' + phoneDigits;
+    
+    const formData = {
+        name: nameInput.value.trim(),
+        phone: fullPhone,
+        email: emailInput.value.trim(),
+        message: document.getElementById('leadMessage').value.trim(),
+        country_code: countryCodeInput.value,
+        source: 'contacts_page',
+        objectTypeId: objectTypeId,
+        objectTypeText: objectTypeText
+    };
+    
+    submitBtn.disabled = true;
+    const originalHtml = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    
+    try {
+        const response = await fetch('/api/applications', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            formMessage.textContent = data.message || 'Заявка успешно отправлена!';
+            formMessage.className = 'form-message success';
+            form.reset();
+            
+            [nameInput, phoneInput, emailInput].forEach(el => {
+                if (el) clearFieldState(el);
+            });
+            
+            // Сброс выбора страны
+            const currentElement = document.getElementById('countryCodeCurrent');
+            const hiddenInput = document.getElementById('countryCodeInput');
+            const dropdown = document.getElementById('countryCodeDropdown');
+            
+            if (currentElement && dropdown) {
+                currentElement.querySelector('.country-flag').textContent = '🇷🇺';
+                currentElement.querySelector('.country-code').textContent = '+7';
+                hiddenInput.value = '+7';
+                updatePhonePlaceholder('+7');
+                
+                dropdown.querySelectorAll('.country-code-item').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                const firstItem = dropdown.querySelector('.country-code-item[data-code="+7"]');
+                if (firstItem) firstItem.classList.add('selected');
+            }
+            
+            // Сброс выбора типа объекта
+            if (objectTypeSelect.container._customSelect) {
+                objectTypeSelect.selectedDisplay.textContent = 'Выберите тип объекта';
+                objectTypeSelect.selectedDisplay.classList.add('placeholder');
+                objectTypeSelect.selectedValue = null;
+                objectTypeSelect.selectedText = null;
+                const allOptions = objectTypeSelect.optionsContainer.querySelectorAll('.option-item');
+                allOptions.forEach(opt => opt.classList.remove('selected'));
+            }
+            
+            setTimeout(() => {
+                alert('Спасибо! Ваша заявка принята. Мы перезвоним вам в течение 30 минут.');
+            }, 100);
+            
+        } else {
+            throw new Error(data.message || 'Ошибка отправки');
+        }
+        
+    } catch (error) {
+        console.error('Ошибка:', error);
+        formMessage.textContent = 'Ошибка соединения. Попробуйте позже.';
+        formMessage.className = 'form-message error';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
+    }
+});
+    });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    // МОБИЛЬНОЕ МЕНЮ
+const mobileToggle = document.getElementById('mobileToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (mobileToggle && navMenu) {
+    // Открытие/закрытие меню
+    mobileToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+        mobileToggle.classList.toggle('active');
+        
+        // Блокировка скролла при открытом меню
+        if (navMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Закрытие меню при клике на ссылку
+    const navLinks = navMenu.querySelectorAll('.nav-link, .nav-contact');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navMenu.classList.remove('active');
+            mobileToggle.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+    
+    // Закрытие меню при клике вне его
+    document.addEventListener('click', function(e) {
+        if (navMenu.classList.contains('active') && 
+            !navMenu.contains(e.target) && 
+            !mobileToggle.contains(e.target)) {
+            navMenu.classList.remove('active');
+            mobileToggle.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+}
+</script>
+</body>
+</html>

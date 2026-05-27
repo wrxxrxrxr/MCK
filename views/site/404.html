@@ -1,0 +1,112 @@
+<!-- views/site/404.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена - STONE ARCH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .error-container {
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 20px;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 900;
+            color: #c9a45b;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #f0f0f0;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: #c9a45b;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .home-link:hover {
+            background: #b38f4a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(201, 164, 91, 0.3);
+        }
+        
+        .home-link i {
+            transition: transform 0.3s;
+        }
+        
+        .home-link:hover i {
+            transform: translateX(-5px);
+        }
+        
+        @media (max-width: 480px) {
+            .error-code {
+                font-size: 80px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1>Страница не найдена</h1>
+        <p>Извините, запрашиваемая страница не существует или была перемещена.</p>
+        <a href="/" class="home-link">
+            <i class="fas fa-arrow-left"></i>
+            Вернуться на главную
+        </a>
+    </div>
+</body>
+</html>

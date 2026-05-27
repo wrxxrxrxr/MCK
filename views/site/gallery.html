@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея проектов | MCK-Reliable</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="main-nav" id="mainNav">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <div class="logo-circle"></div>
+                MCK<span>-Релайбл</span>
+            </a>
+            
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/" class="nav-link">Главная</a></li>
+                <li><a href="/gallery" class="nav-link active">Проекты</a></li>
+                <li><a href="/contacts" class="nav-link">Контакты</a></li>
+                <li><a href="/#contact" class="nav-contact">Обсудить проект</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Галерея -->
+    <main class="gallery-page">
+        <!-- Герой секция галереи -->
+        <section class="gallery-hero">
+            <div class="container">
+                <h1>Наши <span style="color: var(--primary-red);">проекты</span></h1>
+                <p>Исследуйте наше портфолио реализованных объектов. Каждый проект — уникальное решение, созданное с учетом всех требований заказчика.</p>
+                
+                <!-- Фильтры -->
+                <div class="gallery-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Категория</label>
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="all">Все категории</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Статус</label>
+                        <div class="filter-options" id="statusFilter">
+                            <button class="filter-btn active" data-status="all">Все</button>
+                            <button class="filter-btn" data-status="Завершен">Завершенные</button>
+                            <button class="filter-btn" data-status="В процессе">В процессе</button>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Поиск проектов</label>
+                        <div class="filter-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchFilter" placeholder="Поиск по названию или описанию...">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button id="applyFilters" class="btn-primary" style="flex: 1;">
+                            <span>Применить фильтры</span>
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <button id="resetFilters" class="btn-secondary" style="flex: 1;">
+                            <span>Сбросить</span>
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Сетка проектов -->
+        <section class="projects-section">
+            <div class="container">
+                <div id="projectsContainer" class="projects-grid-extended">
+                    <!-- Проекты будут загружены динамически -->
+                </div>
+                
+                <!-- Пагинация -->
+                <div id="pagination" class="pagination"></div>
+                
+                <!-- Сообщение если проектов нет -->
+                <div id="emptyGallery" class="empty-gallery" style="display: none;">
+                    <i class="fas fa-images"></i>
+                    <h3>Проекты не найдены</h3>
+                    <p>По вашему запросу проектов не найдено. Попробуйте изменить параметры фильтрации.</p>
+                    <button id="resetEmptyFilters" class="btn-secondary">
+                        <span>Сбросить фильтры</span>
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно проекта -->
+    <div id="projectModal" class="project-modal">
+        <div class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="modal-content" id="modalContent">
+            <!-- Контент будет загружен динамически -->
+        </div>
+    </div>
+
+    <!-- Подвал -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo">
+                        МСК<span>-Релайбл</span>
+                    </a>
+                    <p class="footer-description">Современная строительная компания, специализирующаяся на архитектурном проектировании и строительстве объектов.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">Ресурсы</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Документация</a></li>
+                        <li><a href="/contacts">Контакты</a></li>
+                        <li><a href="/admin/login" class="admin-link">Сотрудникам</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2026 МСК-Релайбл. Все права защищены.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+<!-- Модальное окно документации -->
+<div class="documentation-modal" id="documentationModal">
+    <div class="documentation-content">
+        <div class="documentation-header">
+            <h2>Документация и <span>инструкция</span></h2>
+            <p>Полное руководство по использованию сайта и просмотру проектов</p>
+            <button class="documentation-close" id="closeDocumentation">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="documentation-body">
+            <!-- Раздел 1: Общая информация -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    Общая информация
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        О компании
+                    </div>
+                    <div class="doc-step-desc">
+                        МСК-Релайбл — строительная организация, специализирующаяся на архитектурном проектировании 
+                        и строительстве объектов премиум-класса. На сайте представлены наши проекты, услуги и 
+                        возможность оставить заявку на консультацию.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Навигация по сайту
+                    </div>
+                    <div class="doc-step-desc">
+                        <strong>Главная</strong> — основная страница с проектами и формой заявки<br>
+                        <strong>Проекты</strong> — галерея всех выполненных работ<br>
+                        <strong>Контакты</strong> — контактная информация и карта<br>
+                        <strong>Обсудить проект</strong> — быстрый переход к форме заявки
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 2: Просмотр проектов -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-images"></i>
+                    Просмотр проектов
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Фильтрация проектов
+                    </div>
+                    <div class="doc-step-desc">
+                        На странице "Проекты" доступны фильтры для удобного поиска:
+                        <div class="doc-example">
+                            ✓ <strong>Категория</strong> — выберите тип объекта (частный дом, бизнес-центр и т.д.)<br>
+                            ✓ <strong>Статус</strong> — завершенные проекты или в процессе строительства<br>
+                            ✓ <strong>Поиск</strong> — введите название или описание проекта
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Пагинация
+                    </div>
+                    <div class="doc-step-desc">
+                        Проекты разбиты на страницы по 6 штук. Используйте кнопки с номерами страниц 
+                        или стрелки "вперед/назад" для навигации.
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">3</span>
+                        Просмотр деталей проекта
+                    </div>
+                    <div class="doc-step-desc">
+                        Нажмите на карточку проекта или кнопку "Подробнее", чтобы открыть модальное окно 
+                        с полной информацией: описание, фотографии, характеристики и особенности проекта.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 3: Модальное окно проекта -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-window-maximize"></i>
+                    Навигация в модальном окне
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Просмотр фотографий
+                    </div>
+                    <div class="doc-step-desc">
+                        В модальном окне проекта вы можете просматривать все фотографии объекта. 
+                        Нажмите на миниатюру внизу, чтобы сменить основное изображение.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Закрытие окна
+                    </div>
+                    <div class="doc-step-desc">
+                        Закрыть модальное окно можно:
+                        <div class="doc-example">
+                            • Нажав на крестик в правом верхнем углу<br>
+                            • Нажав на серую область вне окна<br>
+                            • Нажав клавишу ESC на клавиатуре
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 4: Оформление заявки -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-file-signature"></i>
+                    Как оставить заявку
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Переход к форме
+                    </div>
+                    <div class="doc-step-desc">
+                        Нажмите на кнопку "Обсудить проект" в меню навигации или перейдите на главную страницу 
+                        в раздел контактов.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Заполнение формы
+                    </div>
+                    <div class="doc-step-desc">
+                        <strong>Обязательные поля:</strong> имя, номер телефона, тип объекта.<br>
+                        После отправки наш менеджер свяжется с вами в течение часа.
+                    </div>
+                </div>
+                
+                <div class="doc-note">
+                    <i class="fas fa-lightbulb"></i>
+                    <span class="doc-note-text">
+                        <strong>Совет:</strong> Для быстрого перехода к форме заявки используйте кнопку 
+                        "Обсудить проект" в верхнем меню на любой странице сайта.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Раздел 5: Контакты -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-address-card"></i>
+                    Контакты и связь
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Способы связи
+                    </div>
+                    <div class="doc-step-desc">
+                        <strong>Телефон:</strong> +375(29)-663-82-02<br>
+                        <strong>Email:</strong> mck-reliable@yandex.ru<br>
+                        <strong>Адрес:</strong> Минск, ул. Брестская, 87<br>
+                        <strong>Соцсети:</strong> Instagram
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Время работы
+                    </div>
+                    <div class="doc-step-desc">
+                        Пн-Пт: 9:00 - 18:00<br>
+                        Сб-Вс: выходной<br>
+                        Заявки с сайта принимаются круглосуточно.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Раздел 6: Часто задаваемые вопросы -->
+            <div class="doc-section">
+                <h3>
+                    <i class="fas fa-question-circle"></i>
+                    Часто задаваемые вопросы
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">Почему не загружаются проекты?</div>
+                    <div class="doc-step-desc">
+                        Проверьте подключение к интернету. Если проблема сохраняется, обновите страницу 
+                        или свяжитесь с нами по телефону.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Как быстро обрабатывается заявка?</div>
+                    <div class="doc-step-desc">
+                        Мы обрабатываем заявки в течение 1 часа в рабочее время (Пн-Пт, 9:00-18:00).
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Можно ли посмотреть больше фотографий проекта?</div>
+                    <div class="doc-step-desc">
+                        Да, откройте карточку проекта и в модальном окне вы увидите все загруженные фотографии 
+                        в виде миниатюр под основным изображением.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Работаете ли вы в других городах?</div>
+                    <div class="doc-step-desc">
+                        Да, мы работаем по всей Беларуси и странам СНГ. Условия обсуждаются индивидуально.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+
+// МОДАЛЬНОЕ ОКНО ДОКУМЕНТАЦИИ
+
+function initDocumentationModal() {
+    const modal = document.getElementById('documentationModal');
+    const closeBtn = document.getElementById('closeDocumentation');
+    
+    if (!modal) return;
+    
+    // Находим ссылку "Документация" в футере
+    const docLink = Array.from(document.querySelectorAll('.footer-links a')).find(a => 
+        a.textContent.trim() === 'Документация'
+    );
+    
+    // Открытие модального окна
+    if (docLink) {
+        docLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Закрытие по кнопке
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+    }
+    
+    // Закрытие по клику вне контента
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+        // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let totalProjects = 0;
+        let allProjects = [];
+        let currentFilter = {
+            category: 'all',
+            status: 'all',
+            search: ''
+        };
+
+        // ИНИЦИАЛИЗАЦИЯ
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavigation();
+            loadCategories();
+            loadProjects();
+            initFilters();
+            initScrollToTop();
+            initDocumentationModal();
+        });
+
+        // ФУНКЦИИ НАВИГАЦИИ
+        function initNavigation() {
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMenu = document.getElementById('navMenu');
+            const mainNav = document.getElementById('mainNav');
+            
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    
+                    const spans = mobileToggle.querySelectorAll('span');
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(8px, -8px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+            }
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                });
+            });
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+            });
+        }
+
+// ЗАГРУЗКА КАТЕГОРИЙ
+async function loadCategories() {
+    try {
+        const response = await fetch('/api/projects');
+        if (!response.ok) throw new Error('Ошибка загрузки категорий');
+        
+        const data = await response.json();
+        
+        // Получаем массив проектов (может быть массив или объект с полем projects)
+        const projects = Array.isArray(data) ? data : (data.projects || []);
+        
+        // Собираем уникальные категории
+        const categories = [...new Set(projects.map(p => p.Category).filter(Boolean))];
+        
+        const select = document.getElementById('categoryFilter');
+        
+        // Очищаем и добавляем опцию "Все категории"
+        select.innerHTML = '<option value="all">Все категории</option>';
+        
+        // Добавляем категории из проектов
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+        });
+        
+    } catch (error) {
+        console.error('Ошибка загрузки категорий:', error);
+    }
+}
+
+// ЗАГРУЗКА ПРОЕКТОВ
+async function loadProjects() {
+    try {
+        const container = document.getElementById('projectsContainer');
+        const emptyGallery = document.getElementById('emptyGallery');
+        const pagination = document.getElementById('pagination');
+        
+        // Показываем загрузку
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--primary-red);"></i>
+                <p style="color: #aaa; margin-top: 20px;">Загружаем проекты...</p>
+            </div>
+        `;
+        
+        // Добавляем статус в параметры
+        const params = new URLSearchParams({
+            category: currentFilter.category === 'all' ? '' : currentFilter.category,
+            status: currentFilter.status === 'all' ? '' : currentFilter.status,
+            search: currentFilter.search,
+            page: currentPage,
+            pageSize: itemsPerPage
+        });
+        
+        const response = await fetch(`/api/projects?${params}`);
+        if (!response.ok) throw new Error('Ошибка загрузки проектов');
+        
+        const data = await response.json();
+        
+        // Получаем массив проектов и пагинацию
+        const projects = Array.isArray(data) ? data : (data.projects || []);
+        totalProjects = data.total || data.pagination?.totalCount || projects.length;
+        const paginationData = data.pagination || {
+            page: currentPage,
+            pageSize: itemsPerPage,
+            totalCount: projects.length,
+            totalPages: Math.ceil(projects.length / itemsPerPage)
+        };
+        
+        if (projects.length === 0) {
+            container.innerHTML = '';
+            emptyGallery.style.display = 'block';
+            pagination.innerHTML = '';
+            return;
+        }
+        
+        emptyGallery.style.display = 'none';
+        
+        renderProjects(projects);
+        renderPagination(paginationData);
+        
+    } catch (error) {
+        console.error('Ошибка загрузки проектов:', error);
+        document.getElementById('projectsContainer').innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                <i class="fas fa-exclamation-triangle fa-3x" style="color: #ff4444;"></i>
+                <h3 style="color: var(--white); margin-bottom: 10px;">Ошибка загрузки</h3>
+                <p style="color: #aaa; margin-bottom: 20px;">Не удалось загрузить проекты.</p>
+                <button onclick="loadProjects()" class="btn-secondary">
+                    <span>Повторить</span>
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        `;
+    }
+}
+
+        // ОТРИСОВКА ПРОЕКТОВ
+        function renderProjects(projects) {
+            const container = document.getElementById('projectsContainer');
+            
+            if (projects.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+                        <i class="fas fa-search fa-3x" style="color: #666; margin-bottom: 20px;"></i>
+                        <p style="color: #aaa;">Проекты не найдены</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = projects.map(project => `
+                <div class="project-card-extended" data-id="${project.Id}">
+                    <div class="project-image-container">
+                        <img src="${project.MainImage || 'https://images.unsplash.com/photo-1503387769-00d112b7a3b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}" 
+                             alt="${project.Title || 'Проект'}" 
+                             loading="lazy">
+                        ${project.Category ? `<div class="project-category-badge">${project.Category}</div>` : ''}
+                        ${project.Status ? `<div class="project-status-badge">${project.Status}</div>` : ''}
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">${project.Title || 'Без названия'}</h3>
+                        <p class="project-description">${project.ShortDescription || project.Description?.substring(0, 150) + '...' || 'Описание отсутствует'}</p>
+                        
+                        <div class="project-details">
+                            ${project.Location ? `
+                                <div class="project-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>${project.Location}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${project.Area ? `
+                                <div class="project-detail">
+                                    <i class="fas fa-expand-alt"></i>
+                                    <span>${project.Area} м²</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${project.Year ? `
+                                <div class="project-detail">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>${project.Year}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <a href="#" class="project-link view-project-btn" data-id="${project.Id}">
+                            <span>Подробнее</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Добавляем обработчики
+            document.querySelectorAll('.view-project-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openProjectModal(this.getAttribute('data-id'));
+                });
+            });
+            
+            document.querySelectorAll('.project-card-extended').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.view-project-btn')) {
+                        openProjectModal(this.getAttribute('data-id'));
+                    }
+                });
+            });
+        }
+
+        async function openProjectModal(projectId) {
+    try {
+        const modal = document.getElementById('projectModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        modalContent.innerHTML = `
+            <div style="text-align: center; padding: 60px;">
+                <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--primary-red); margin-bottom: 20px;"></i>
+                <p style="color: #aaa;">Загружаем информацию...</p>
+            </div>
+        `;
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        const response = await fetch(`/api/projects/${projectId}`);
+        if (!response.ok) throw new Error('Ошибка загрузки проекта');
+        
+        const project = await response.json();
+        
+        const allImages = project.Images || [];
+        const mainImage = allImages[0]?.url || project.MainImage || 'https://images.unsplash.com/photo-1503387769-00d112b7a3b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80';
+        
+        modalContent.className = 'modal-content horizontal-layout';
+        modalContent.innerHTML = `
+            <div class="modal-split">
+                <div class="modal-split-left">
+                    <div class="modal-main-image">
+                        <img src="${mainImage}" alt="${project.Title || 'Проект'}" id="mainModalImage">
+                    </div>
+                    ${allImages.length > 1 ? `
+                        <div class="modal-thumbnails">
+                            ${allImages.map((img, index) => `
+                                <div class="modal-thumbnail ${index === 0 ? 'active' : ''}" data-image="${img.url}">
+                                    <img src="${img.url}" alt="Фото ${index + 1}">
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                
+                <div class="modal-split-right">
+                    <h2>${project.Title || 'Без названия'}</h2>
+                    
+                    <div class="modal-meta">
+                        ${project.Category ? `
+                            <div class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <div class="meta-label">Категория</div>
+                                    <div class="meta-value">${project.Category}</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${project.Location ? `
+                            <div class="meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <div class="meta-label">Адрес</div>
+                                    <div class="meta-value">${project.Location}</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${project.Area ? `
+                            <div class="meta-item">
+                                <i class="fas fa-expand-alt"></i>
+                                <div>
+                                    <div class="meta-label">Площадь</div>
+                                    <div class="meta-value">${project.Area} м²</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${project.Year ? `
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <div class="meta-label">Год</div>
+                                    <div class="meta-value">${project.Year}</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${project.Status ? `
+                            <div class="meta-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <div class="meta-label">Статус</div>
+                                    <div class="meta-value">${project.Status}</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="modal-description">
+                        <h3>Описание проекта</h3>
+                        <p>${project.Description || 'Описание отсутствует'}</p>
+                    </div>
+                    
+                    ${project.Features && project.Features.length > 0 ? `
+                        <div class="modal-features">
+                            <h3>Особенности проекта</h3>
+                            <div class="features-list">
+                                ${project.Features.map(feature => `
+<div class="modal-feature-item">
+    <i class="fas fa-check-circle"></i>
+    <span>${feature}</span>
+</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+        
+        document.querySelectorAll('.modal-thumbnail').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const imageUrl = this.getAttribute('data-image');
+                document.getElementById('mainModalImage').src = imageUrl;
+                document.querySelectorAll('.modal-thumbnail').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+    } catch (error) {
+        console.error('Ошибка загрузки проекта:', error);
+        document.getElementById('modalContent').innerHTML = `
+            <div style="text-align: center; padding: 60px;">
+                <i class="fas fa-exclamation-triangle fa-3x" style="color: #ff4444; margin-bottom: 20px;"></i>
+                <h3 style="color: var(--white); margin-bottom: 10px;">Ошибка загрузки</h3>
+                <p style="color: #aaa; margin-bottom: 20px;">Не удалось загрузить информацию о проекте.</p>
+                <button onclick="closeModal()" class="btn-secondary">
+                    <span>Закрыть</span>
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    }
+}
+
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ПАГИНАЦИЯ
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(totalProjects / itemsPerPage);
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            
+            html += `
+                <button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" 
+                        onclick="changePage(${currentPage - 1})" 
+                        ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+            
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            if (startPage > 1) {
+                html += `
+                    <button class="pagination-btn" onclick="changePage(1)">1</button>
+                    ${startPage > 2 ? '<span class="pagination-dots">...</span>' : ''}
+                `;
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                html += `
+                    <button class="pagination-btn ${currentPage === i ? 'active' : ''}" 
+                            onclick="changePage(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            if (endPage < totalPages) {
+                html += `
+                    ${endPage < totalPages - 1 ? '<span class="pagination-dots">...</span>' : ''}
+                    <button class="pagination-btn" onclick="changePage(${totalPages})">${totalPages}</button>
+                `;
+            }
+            
+            html += `
+                <button class="pagination-btn ${currentPage === totalPages ? 'disabled' : ''}" 
+                        onclick="changePage(${currentPage + 1})" 
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            pagination.innerHTML = html;
+        }
+
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(totalProjects / itemsPerPage)) return;
+            currentPage = page;
+            loadProjects();
+            
+            window.scrollTo({
+                top: document.querySelector('.gallery-filters').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // ФИЛЬТРЫ
+        function initFilters() {
+            document.querySelectorAll('.filter-btn[data-status]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn[data-status]').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    currentFilter.status = this.getAttribute('data-status');
+                });
+            });
+            
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                currentFilter.category = this.value;
+            });
+            
+            const searchInput = document.getElementById('searchFilter');
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentFilter.search = this.value.trim();
+                }, 500);
+            });
+            
+            document.getElementById('applyFilters').addEventListener('click', () => {
+                currentPage = 1;
+                loadProjects();
+            });
+            
+            document.getElementById('resetFilters').addEventListener('click', resetFilters);
+            document.getElementById('resetEmptyFilters').addEventListener('click', resetFilters);
+            
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('projectModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeModal();
+            });
+        }
+
+        function resetFilters() {
+            currentFilter = {
+                category: 'all',
+                status: 'all',
+                search: ''
+            };
+            
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('searchFilter').value = '';
+            
+            document.querySelectorAll('.filter-btn[data-status]').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-status') === 'all') {
+                    btn.classList.add('active');
+                }
+            });
+            
+            currentPage = 1;
+            loadProjects();
+        }
+
+        // КНОПКА "НАВЕРХ"
+
+        function initScrollToTop() {
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Экспортируем функции
+        window.changePage = changePage;
+        window.openProjectModal = openProjectModal;
+        window.closeModal = closeModal;
+        window.loadProjects = loadProjects;
+        window.resetFilters = resetFilters;
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+</html>

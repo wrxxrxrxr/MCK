@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель менеджера - Управление заявками и заказами</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/manager.css">
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="admin-container">
+        <!-- Сайдбар -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-user-tie"></i>
+                    <span>MCK Менеджер</span>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" class="menu-item active" onclick="switchTab('leads'); return false;">
+                        <i class="fas fa-envelope"></i>
+                        Заявки
+                        <span class="badge" id="leadsCount">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" onclick="switchTab('orders'); return false;">
+                        <i class="fas fa-clipboard-list"></i>
+                        Заказы
+                        <span class="badge" id="ordersCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Шапка -->
+            <div class="header">
+                <h1 class="page-title" id="pageTitle">
+                    Управление заявками
+                </h1>
+                <div class="user-menu">
+                    <div class="user-badge">
+                        <i class="fas fa-user"></i>
+                        <span id="userName">Менеджер</span>
+                    </div>
+                    <button class="btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Выйти
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Статистика для заявок -->
+            <div id="leadsStats" class="stats-grid">
+                <div class="stat-card stat-total">
+                    <div class="stat-info">
+                        <h3>Всего заявок</h3>
+                        <div class="stat-number" id="totalLeads">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-new">
+                    <div class="stat-info">
+                        <h3>Новые заявки</h3>
+                        <div class="stat-number" id="newLeads">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-contacted">
+                    <div class="stat-info">
+                        <h3>На рассмотрении</h3>
+                        <div class="stat-number" id="contactedLeads">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-progress">
+                    <div class="stat-info">
+                        <h3>В работе</h3>
+                        <div class="stat-number" id="inProgressLeads">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-completed">
+                    <div class="stat-info">
+                        <h3>Завершено</h3>
+                        <div class="stat-number" id="completedLeads">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-rejected">
+                    <div class="stat-info">
+                        <h3>Отклонено</h3>
+                        <div class="stat-number" id="rejectedLeads">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ordersStats" class="stats-grid" style="display: none;">
+                <div class="stat-card stat-total">
+                    <div class="stat-info">
+                        <h3>Всего заказов</h3>
+                        <div class="stat-number" id="totalOrders">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-progress">
+                    <div class="stat-info">
+                        <h3>В работе</h3>
+                        <div class="stat-number" id="inProgressOrders">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-completed">
+                    <div class="stat-info">
+                        <h3>Завершено</h3>
+                        <div class="stat-number" id="completedOrders">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-card stat-total">
+                    <div class="stat-info">
+                        <h3>Общая сумма</h3>
+                        <div class="stat-number" id="totalRevenue">0 BYN</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Фильтры для заявок -->
+            <div id="leadsFilters" class="control-panel">
+                <div class="filters">
+                    <div class="filter-buttons">
+                        <button class="filter-btn" onclick="filterLeads('all', event)">
+                            <i class="fas fa-list"></i> Все
+                        </button>
+                        <button class="filter-btn active" onclick="filterLeads('Новая', event)">
+                            <i class="fas fa-clock"></i> Новые
+                        </button>
+                        <button class="filter-btn" onclick="filterLeads('На рассмотрении', event)">
+                            <i class="fas fa-phone"></i> На рассмотрении
+                        </button>
+                        <button class="filter-btn" onclick="filterLeads('В работе', event)">
+                            <i class="fas fa-spinner"></i> В работе
+                        </button>
+                        <button class="filter-btn" onclick="filterLeads('Завершена', event)">
+                            <i class="fas fa-check-circle"></i> Завершенные
+                        </button>
+                        <button class="filter-btn" onclick="filterLeads('Отклонена', event)">
+                            <i class="fas fa-times-circle"></i> Отклоненные
+                        </button>
+                    </div>
+<div class="sort-group">
+    <label class="sort-label">
+         Сортировать:
+    </label>
+    <select id="leadsSortBy" class="sort-select" onchange="loadLeads(1)">
+        <option value="createdAt_desc">По дате (новые сначала)</option>
+        <option value="createdAt_asc">По дате (старые сначала)</option>
+        <option value="name_asc">По имени (А-Я)</option>
+        <option value="name_desc">По имени (Я-А)</option>
+        <option value="company_asc">По компании (А-Я)</option>
+        <option value="company_desc">По компании (Я-А)</option>
+        <option value="phone_asc">По телефону (А-Я)</option>
+        <option value="phone_desc">По телефону (Я-А)</option>
+    </select>
+</div>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени или компании...">
+                        <button class="btn-search" onclick="searchLeads()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Фильтры для заказов-->
+            <div id="ordersFilters" class="control-panel" style="display: none;">
+                <div class="filters">
+                    <div class="search-box" style="width: 100%;">
+                        <input type="text" id="ordersSearchInput" placeholder="Поиск по номеру заказа, клиенту, объекту, УНП..." style="width: 100%;">
+                        <button class="btn-search" onclick="searchOrders()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Список заявок -->
+<div id="leadsSection" class="leads-section">
+    <div class="loading" id="leadsLoading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Загрузка заявок...</p>
+    </div>
+    <div class="leads-grid" id="leadsList" style="display: none;"></div>
+    <div id="leadsPagination" class="pagination" style="display: none;"></div>
+</div>
+
+            <!-- Список заказов -->
+            <div id="ordersSection" class="orders-list" style="display: none;">
+                <div class="loading" id="ordersLoading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Загрузка заказов...</p>
+                </div>
+                <div id="ordersList" style="display: none;"></div>
+                <div id="ordersPagination" class="pagination" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для просмотра/редактирования заказа -->
+    <div id="orderViewModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-clipboard-list"></i> Детали заказа</h2>
+                <button class="modal-close" onclick="closeOrderViewModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="orderDetailsContent">
+                <!-- Здесь будет динамическое содержимое -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeOrderViewModal()">
+                    <i class="fas fa-times"></i> Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для редактирования работы -->
+    <div id="editWorkModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Редактирование сведений о работе</h2>
+                <button class="modal-close" onclick="closeEditWorkModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editWorkForm">
+                    <input type="hidden" id="editWorkId">
+                    <input type="hidden" id="editOrderId">
+                    
+                    <div class="form-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Вид работы</label>
+                                <select id="editWorkTypeId" class="form-control" required>
+                                    <option value="">Загрузка...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Количество</label>
+                                <input type="number" id="editQuantity" class="form-control" step="0.01" min="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Цена за единицу (BYN)</label>
+                                <input type="number" id="editUnitCost" class="form-control" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Длительность (дней)</label>
+                                <input type="number" id="editDuration" class="form-control" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ответственный</label>
+                                <select id="editResponsibleUser" class="form-control">
+                                    <option value="">Не назначен</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Статус</label>
+                                <select id="editWorkStatus" class="form-control" required>
+                                    <option value="Не начат">Не начат</option>
+                                    <option value="В процессе">В процессе</option>
+                                    <option value="Выполнен">Выполнен</option>
+                                    <option value="Приостановлен">Приостановлен</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Комментарий</label>
+                                <textarea id="editWorkComment" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditWorkModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+                <button class="btn btn-success" onclick="saveWorkChanges()">
+                    <i class="fas fa-save"></i> Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления работы -->
+    <div id="addWorkModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus-circle"></i> Добавление сведений о работе</h2>
+                <button class="modal-close" onclick="closeAddWorkModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addWorkForm">
+                    <input type="hidden" id="addOrderId">
+                    
+                    <div class="form-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Вид работы <span class="required">*</span></label>
+                                <select id="addWorkTypeId" class="form-control" required>
+                                    <option value="">Загрузка...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Количество <span class="required">*</span></label>
+                                <input type="number" id="addQuantity" class="form-control" step="0.01" min="0.01" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Цена за единицу (BYN) <span class="required">*</span></label>
+                                <input type="number" id="addUnitCost" class="form-control" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Длительность (дней) <span class="required">*</span></label>
+                                <input type="number" id="addDuration" class="form-control" min="1" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ответственный</label>
+                                <select id="addResponsibleUser" class="form-control">
+                                    <option value="">Не назначен</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Комментарий</label>
+                                <textarea id="addWorkComment" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddWorkModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+                <button class="btn btn-success" onclick="addWork()">
+                    <i class="fas fa-plus"></i> Добавить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+         МОДАЛКА: Детали работы (файлы + комментарии)-->
+    <div id="workDetailsModal" class="modal" style="display:none;">
+        <div class="modal-content wdm-content">
+          <div class="modal-header wdm-header">
+            <div class="wdm-title-row">
+                <button id="backToWorkSelectionBtn" class="wdm-back-btn" title="Выбрать другую работу">
+                    ←
+                </button>
+              <div>
+                <h2 id="wdmWorkName">Работа</h2>
+                <span id="wdmStatusBadge" class="wdm-status"></span>
+              </div>
+            </div>
+            <button class="modal-close" onclick="closeWorkDetailsModal()">×</button>
+          </div>
+      
+          <div class="wdm-body">
+            <div class="wdm-left">
+              <div class="wdm-meta-card">
+                <div class="wdm-meta-row"><span>Количество</span><strong id="wdmQty">—</strong></div>
+                <div class="wdm-meta-row"><span>Цена / ед.</span><strong id="wdmPrice">—</strong></div>
+                <div class="wdm-meta-row"><span>Сумма</span><strong id="wdmTotal">—</strong></div>
+                <div class="wdm-meta-row"><span>Срок</span><strong id="wdmDuration">—</strong></div>
+                <div class="wdm-meta-row"><span>Ответственный</span><strong id="wdmResponsible">—</strong></div>
+                <div class="wdm-meta-row"><span>Завершено</span><strong id="wdmCompleted">—</strong></div>
+              </div>
+      
+              <!-- Смена статуса -->
+              <div class="wdm-section">
+                <div class="wdm-section-title">Статус работы</div>
+                <div class="wdm-status-btns" id="wdmStatusBtns"></div>
+              </div>
+      
+              <!-- Лента комментариев -->
+              <div class="wdm-section wdm-comments-section">
+                <div class="wdm-section-title">
+                  Журнал / Комментарии
+                  <label class="wdm-toggle-label">
+                    <input type="checkbox" id="wdmShowAll" onchange="loadWorkComments()" checked>
+                    Все записи
+                  </label>
+                </div>
+                <div class="wdm-comments-list" id="wdmCommentsList">
+                  <div class="wdm-loading">Загрузка...</div>
+                </div>
+                <!-- Форма добавления -->
+                <div class="wdm-comment-form">
+                  <textarea id="wdmNewComment"
+                            placeholder="Напишите комментарий о ходе работ..."
+                            rows="3"></textarea>
+                  <div class="wdm-comment-form-footer">
+                    <label class="wdm-vis-label">
+                      <input type="checkbox" id="wdmVisibleClient" checked>
+                      Видит клиент
+                    </label>
+                    <button class="wdm-btn wdm-btn-primary" onclick="submitComment()">
+                      Отправить
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Правая колонка: файлы -->
+            <div class="wdm-right">
+              <div class="wdm-section">
+                <div class="wdm-section-title"> Файлы</div>
+      
+                <!-- Дроп-зона -->
+                <div class="wdm-dropzone" id="wdmDropzone"
+                     ondragover="event.preventDefault(); this.classList.add('drag-over')"
+                     ondragleave="this.classList.remove('drag-over')"
+                     ondrop="handleFileDrop(event)">
+                  <p>Перетащите файлы сюда</p>
+                  <p class="wdm-drop-hint">или</p>
+                  <label class="wdm-btn wdm-btn-outline">
+                    Выбрать файлы
+                    <input type="file" id="wdmFileInput" multiple style="display:none"
+                           onchange="handleFileSelect(event)">
+                  </label>
+                  <p class="wdm-drop-hint">PDF, DOC, XLSX, изображения — до 25 МБ</p>
+                </div>
+      
+                <!-- Описание файла -->
+                <input type="text" id="wdmFileDesc"
+                       class="wdm-file-desc-input"
+                       placeholder="Описание файла (необязательно)">
+      
+                <!-- Прогресс-бар загрузки -->
+                <div class="wdm-upload-progress" id="wdmUploadProgress" style="display:none">
+                  <div class="wdm-progress-bar">
+                    <div class="wdm-progress-fill" id="wdmProgressFill"></div>
+                  </div>
+                  <span id="wdmProgressText">Загрузка...</span>
+                </div>
+      
+                <!-- Список файлов -->
+                <div class="wdm-files-list" id="wdmFilesList">
+                  <div class="wdm-loading">Загрузка...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeWorkDetailsModal()">Закрыть</button>
+          </div>
+        </div>
+    </div>
+    <div id="contractModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:900px; width:95%;">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-contract"></i> Договор строительного подряда</h2>
+                <button class="modal-close" onclick="closeContractModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:0; overflow:hidden;">
+                <iframe id="contractIframe"
+                        style="width:100%; height:75vh; border:none; display:block;"
+                        sandbox="allow-same-origin allow-scripts allow-modals"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeContractModal()">
+                    <i class="fas fa-times"></i> Закрыть
+                </button>
+                <button class="btn btn-primary" onclick="printContract()">
+                    <i class="fas fa-print"></i> Печать
+                </button>
+                <button class="btn btn-success" id="downloadContractBtn">
+                    <i class="fas fa-download"></i> Скачать DOCX
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Промежуточное модальное окно для выбора работы -->
+<div id="workSelectionModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-tasks"></i> Выберите работу</h2>
+            <button class="modal-close" onclick="closeWorkSelectionModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="workSelectionList" style="max-height: 400px; overflow-y: auto;">
+                <div class="loading">Загрузка работ...</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeWorkSelectionModal()">Отмена</button>
+        </div>
+    </div>
+</div>
+
+        <script src="/public/js/manager.js"></script>
+</body>
+</html>

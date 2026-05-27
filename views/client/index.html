@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет клиента - МСК-Релайбл</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#e31e24">
+    <link rel="stylesheet" href="/css/client.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <div class="header">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <h1>Личный кабинет</h1>
+        <div style="display: flex; gap: 10px;">
+            <button id="pushNotificationBtn" class="notification-btn" onclick="togglePushNotifications()" style="background: none; border: none; font-size: 24px; cursor: pointer; position: relative;">🔔</button>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+    
+  <!-- Боковое меню -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div style="font-size: 20px; margin-bottom: 5px;">МСК-Релайбл</div>
+        <div style="font-size: 14px; opacity: 0.8;" id="userNameSidebar"></div>
+    </div>
+    <div class="sidebar-menu">
+        <a onclick="showSection('dashboard')">
+             Главная
+        </a>
+        <a onclick="showSection('orders')">
+             Мои заказы
+        </a>
+        <a onclick="showSection('progress')">
+             Ход работ
+        </a>
+        <a onclick="showSection('docs')">
+             Документы
+        </a>
+        <a onclick="showSection('profile')">
+             Профиль
+        </a>
+        <!-- Новый пункт - Документация -->
+        <a onclick="openClientDocumentation()">
+             Документация
+        </a>
+    </div>
+</div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    
+    <!-- Контент -->
+    <div class="container" id="content">
+        <div class="loader">Загрузка...</div>
+    </div>
+
+    <!-- Секция Ход работ -->
+    <div id="section-progress" style="display: none;">
+        <div class="container">
+            <div class="cp-header">
+                <h2 class="cp-title"> Ход выполнения работ</h2>
+                <p class="cp-subtitle">Актуальная информация по всем вашим заказам</p>
+            </div>
+          
+            <!-- Выбор заказа -->
+            <div class="cp-order-selector" id="cpOrderSelector" style="display:none">
+                <label class="cp-select-label">Выберите объект:</label>
+                <div class="cp-order-tabs" id="cpOrderTabs"></div>
+            </div>
+          
+            <!-- Загрузка -->
+            <div class="cp-loading" id="cpLoading">
+                <div class="cp-spinner"></div>
+                <p>Загружаем данные...</p>
+            </div>
+          
+            <!-- Пусто -->
+            <div class="cp-empty" id="cpEmpty" style="display:none">
+                
+                <h3>Нет активных заказов</h3>
+                <p>Информация о ходе работ появится здесь после заключения договора</p>
+            </div>
+          
+            <!-- Контент заказа -->
+            <div class="cp-content" id="cpContent" style="display:none">
+                <!-- Шапка заказа -->
+                <div class="cp-order-card">
+                    <div>
+                        <div class="cp-order-num" id="cpOrderNum">Договор №—</div>
+                        <div class="cp-order-obj" id="cpOrderObj">—</div>
+                    </div>
+                    <div class="cp-order-stats">
+                        <div class="cp-stat">
+                            <span class="cp-stat-val" id="cpStatTotal">0</span>
+                            <span class="cp-stat-lbl">Всего работ</span>
+                        </div>
+                        <div class="cp-stat cp-stat-done">
+                            <span class="cp-stat-val" id="cpStatDone">0</span>
+                            <span class="cp-stat-lbl">Выполнено</span>
+                        </div>
+                        <div class="cp-stat cp-stat-progress">
+                            <span class="cp-stat-val" id="cpStatProgress">0</span>
+                            <span class="cp-stat-lbl">В процессе</span>
+                        </div>
+                        <div class="cp-stat cp-stat-files">
+                            <span class="cp-stat-val" id="cpStatFiles">0</span>
+                            <span class="cp-stat-lbl">Файлов</span>
+                        </div>
+                    </div>
+                </div>
+          
+                <!-- Прогресс-бар -->
+                <div class="cp-progress-wrap">
+                    <div class="cp-progress-label">
+                        <span>Общий прогресс по объекту</span>
+                        <strong id="cpProgressPct">0%</strong>
+                    </div>
+                    <div class="cp-progress-track">
+                        <div class="cp-progress-bar" id="cpProgressBar" style="width:0%"></div>
+                    </div>
+                </div>
+          
+                <!-- Перечень работ (аккордеон) -->
+                <div class="cp-works-section">
+                    <h3 class="cp-section-title"> Перечень работ</h3>
+                    <div id="cpWorksList"></div>
+                </div>
+          
+                <!-- Лента обновлений -->
+                <div class="cp-feed-section">
+                    <h3 class="cp-section-title"> Лента обновлений</h3>
+                    <div class="cp-feed" id="cpFeed">
+                        <div class="cp-feed-empty">Нет обновлений</div>
+                    </div>
+                </div>
+          
+                <!-- Файлы -->
+                <div class="cp-files-section" id="cpFilesSection" style="display:none">
+                    <h3 class="cp-section-title"> Прикреплённые файлы</h3>
+                    <div class="cp-files-grid" id="cpFilesGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <!-- Модальное окно для отзыва -->
+    <div class="modal" id="reviewModal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Оставить отзыв</h2>
+                <span class="modal-close" onclick="closeReviewModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm" onsubmit="submitReview(event)">
+                    <input type="hidden" id="reviewOrderId" value="">
+                    <input type="hidden" id="reviewApplicationId" value="">
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: 500;">Оцените работу:</label>
+                        <div class="rating-stars" style="display: flex; gap: 10px; justify-content: center; font-size: 30px;">
+                            <span class="star" data-rating="1" onclick="setRating(1)" style="cursor: pointer; color: #ddd;">★</span>
+                            <span class="star" data-rating="2" onclick="setRating(2)" style="cursor: pointer; color: #ddd;">★</span>
+                            <span class="star" data-rating="3" onclick="setRating(3)" style="cursor: pointer; color: #ddd;">★</span>
+                            <span class="star" data-rating="4" onclick="setRating(4)" style="cursor: pointer; color: #ddd;">★</span>
+                            <span class="star" data-rating="5" onclick="setRating(5)" style="cursor: pointer; color: #ddd;">★</span>
+                        </div>
+                        <input type="hidden" id="reviewRating" value="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ваш отзыв:</label>
+                        <textarea id="reviewText" rows="5" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Поделитесь впечатлениями о работе..."></textarea>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                        <p style="margin: 0; font-size: 13px; color: #666;">
+                            <i class="fas fa-info-circle"></i> 
+                            Отзыв будет опубликован после проверки модератором
+                        </p>
+                    </div>
+                    
+                    <div class="form-actions" style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-secondary" onclick="closeReviewModal()" style="flex: 1; padding: 12px;">Отмена</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 1; padding: 12px; background: #e31e24; color: white; border: none; border-radius: 8px;">Отправить отзыв</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+<!-- Модальное окно документации -->
+<div class="documentation-modal" id="clientDocumentationModal">
+    <div class="documentation-content">
+        <div class="documentation-header">
+            <h2>Инструкция по <span>личному кабинету</span></h2>
+            <p>Руководство по использованию всех функций</p>
+            <button class="documentation-close" onclick="closeClientDocumentation()">
+                <i>✕</i>
+            </button>
+        </div>
+        <div class="documentation-body">
+            <!-- Общая информация -->
+            <div class="doc-section">
+                <h3>
+            
+                    Общая информация
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        О личном кабинете
+                    </div>
+                    <div class="doc-step-desc">
+                        Личный кабинет клиента МСК-Релайбл позволяет отслеживать статус заказов, 
+                        ход выполнения работ, скачивать документы и оставлять отзывы.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Навигация
+                    </div>
+                    <div class="doc-step-desc">
+                        <strong>☰ Кнопка меню</strong> — открыть/закрыть боковое меню<br>
+                        <strong>🔔 Колокольчик</strong> — включить/отключить push-уведомления<br>
+                        <strong>Выйти</strong> — выход из личного кабинета
+                    </div>
+                </div>
+            </div>
+
+            <!-- Разделы кабинета -->
+            <div class="doc-section">
+                <h3>
+                    
+                    Разделы кабинета
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Главная
+                    </div>
+                    <div class="doc-step-desc">
+                        Обзорная страница со статистикой:
+                        <div class="doc-example">
+                            • Всего заказов<br>
+                            • В работе<br>
+                            • Завершено<br>
+                            • Отзывов
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Мои заказы
+                    </div>
+                    <div class="doc-step-desc">
+                        Список всех ваших заказов с информацией о статусе и стоимости. 
+                        Для завершенных заказов доступна кнопка "★ Оставить отзыв".
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">3</span>
+                        Ход работ
+                    </div>
+                    <div class="doc-step-desc">
+                        Детальная информация о выполнении работ:
+                        <div class="doc-example">
+                            • Прогресс по объекту в процентах<br>
+                            • Перечень работ с возможностью раскрыть детали<br>
+                            • Комментарии от менеджера<br>
+                            • Прикрепленные файлы и фото
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">4</span>
+                        Документы
+                    </div>
+                    <div class="doc-step-desc">
+                        Все документы по вашим заказам: договоры, сметы, акты. 
+                        Доступно скачивание .
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">5</span>
+                        Профиль
+                    </div>
+                    <div class="doc-step-desc">
+                        Ваши личные данные: ФИО, Email, телефон. 
+                        Кнопка "Сменить пароль" позволяет изменить пароль для входа.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ход работ - подробно -->
+            <div class="doc-section">
+                <h3>
+                    
+                    Работа с разделом "Ход работ"
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Выбор заказа
+                    </div>
+                    <div class="doc-step-desc">
+                        Если у вас несколько активных заказов, вверху страницы появятся вкладки 
+                        для переключения между объектами.
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Просмотр работ
+                    </div>
+                    <div class="doc-step-desc">
+                        Нажмите на любую работу или кнопку "▼" чтобы раскрыть детали:
+                        <div class="doc-example">
+                            • Количество и сроки<br>
+                            • Исполнитель<br>
+                            • Комментарии по работе<br>
+                            • Прикрепленные файлы и фото
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">3</span>
+                        Файлы и фото
+                    </div>
+                    <div class="doc-step-desc">
+                        Фотографии с объекта можно открыть для просмотра или скачать. 
+                        Документы доступны для скачивания по клику на название или кнопку "⬇ Скачать".
+                    </div>
+                </div>
+            </div>
+
+            <!-- Отзывы -->
+            <div class="doc-section">
+                <h3>
+                    <span>⭐</span>
+                    Как оставить отзыв
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Условия
+                    </div>
+                    <div class="doc-step-desc">
+                        Отзыв можно оставить только для завершенных заказов, по которым еще нет отзыва.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Процесс
+                    </div>
+                    <div class="doc-step-desc">
+                        1. Перейдите в раздел "Мои заказы"<br>
+                        2. Найдите завершенный заказ<br>
+                        3. Нажмите кнопку "★ Оставить отзыв"<br>
+                        4. Выберите оценку (1-5 звезд)<br>
+                        5. Напишите текст отзыва<br>
+                        6. Нажмите "Отправить отзыв"
+                    </div>
+                    <div class="doc-note">
+                        
+                        <span class="doc-note-text">
+                            Отзыв появится на сайте после проверки модератором.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Уведомления -->
+            <div class="doc-section">
+                <h3>
+                    <span>🔔</span>
+                    Push-уведомления
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">1</span>
+                        Включение
+                    </div>
+                    <div class="doc-step-desc">
+                        Нажмите на иконку 🔔 в шапке. При первом включении браузер запросит 
+                        разрешение на отправку уведомлений — нажмите "Разрешить".
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">2</span>
+                        Какие уведомления приходят
+                    </div>
+                    <div class="doc-step-desc">
+                        <div class="doc-example">
+                            • Изменение статуса заказа<br>
+                            • Новые комментарии менеджера<br>
+                            • Завершение этапов работ<br>
+                            • Добавление новых документов
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">
+                        <span class="doc-step-number">3</span>
+                        Отключение
+                    </div>
+                    <div class="doc-step-desc">
+                        Повторно нажмите на 🔔 чтобы отключить уведомления.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Частые вопросы -->
+            <div class="doc-section">
+                <h3>
+                    
+                    Частые вопросы
+                </h3>
+                <div class="doc-step">
+                    <div class="doc-step-title">Как скачать договор?</div>
+                    <div class="doc-step-desc">
+                        Перейдите в раздел "Документы" и нажмите кнопку напротив нужного файла.
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Как изменить контактные данные?</div>
+                    <div class="doc-step-desc">
+                        Свяжитесь с менеджером — контакты указаны в разделе "Профиль".
+                    </div>
+                </div>
+                <div class="doc-step">
+                    <div class="doc-step-title">Забыл пароль?</div>
+                    <div class="doc-step-desc">
+                        На странице входа нажмите "Забыли пароль?" и следуйте инструкции.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="/public/js/client.js"></script>
+</body>
+</html>
